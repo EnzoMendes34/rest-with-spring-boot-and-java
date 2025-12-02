@@ -1,6 +1,6 @@
 package com.github.EnzoMendes34.controllers;
 
-import com.github.EnzoMendes34.PersonServices;
+import com.github.EnzoMendes34.services.PersonServices;
 import com.github.EnzoMendes34.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -20,7 +20,7 @@ public class PersonController {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Person findById(@PathVariable("id") String id){
+    public Person findById(@PathVariable("id") Long id){
         return service.findById(id);
     }
 
@@ -54,7 +54,7 @@ public class PersonController {
             value = "/{id}",
             method = RequestMethod.DELETE
     )
-    public void delete(@PathVariable("id") String id){
+    public void delete(@PathVariable("id") Long id){
         service.delete(id);
     }
 
