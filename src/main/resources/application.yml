@@ -18,3 +18,5 @@ spring:
 logging:
   level:
     root: info
+spring-doc:
+  paths-to-match: /api/**/v1/**

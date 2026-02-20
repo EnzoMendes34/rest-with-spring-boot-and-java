@@ -40,7 +40,7 @@ public class PersonServices {
     }
 
     public List<PersonDTO> findAll(){
-        logger.info("Finding all People");
+        logger.info("Searching all People");
 
         var people = parseListObjects(repository.findAll(), PersonDTO.class);
         people.forEach(this::addHateoasLinks);
@@ -63,7 +63,7 @@ public class PersonServices {
         logger.info("Updating a person");
 
         Person entity = repository.findById(person.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("No records found for this Id"));
+                .orElseThrow(() -> new ResourceNotFoundException("No People found for the given ID"));
 
         entity.setFirstName(person.getFirstName());
         entity.setLastName(person.getLastName());
@@ -80,11 +80,12 @@ public class PersonServices {
         logger.info("Deleting a person!");
 
         Person entity = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("No records found for this Id"));
+                .orElseThrow(() -> new ResourceNotFoundException("No People found for the given ID"));
 
         repository.delete(entity);
     }
 
+    //helper
     private void addHateoasLinks(PersonDTO dto){
         dto.add(linkTo(methodOn(PersonController.class).findById(dto.getId())).withSelfRel().withType("GET"));
         dto.add(linkTo(methodOn(PersonController.class).findAll()).withRel("findAll").withType("GET"));
