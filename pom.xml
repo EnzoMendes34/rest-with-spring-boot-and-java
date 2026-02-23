@@ -64,6 +64,17 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>mysql</artifactId>
+			<version>${testcontainers.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.hateoas</groupId>
 			<artifactId>spring-hateoas</artifactId>
 		</dependency>
@@ -98,7 +109,7 @@
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-maven-plugin</artifactId>
 				<configuration>
-					<url>jdbc:mysql://localhost:3306/rest_with_spring_boot_and_java?useTimezone=true&amp;serverTimezone=UTC</url>
+					<url>jdbc:mysql://localhost:3306/rest_with_spring_boot_and_java?useTimezone=true&amp;amp;serverTimezone=UTC</url>
 					<user>root</user>
 					<password>123456</password>
 				</configuration>
