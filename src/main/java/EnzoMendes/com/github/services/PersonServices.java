@@ -4,7 +4,6 @@ import EnzoMendes.com.github.controllers.PersonController;
 import EnzoMendes.com.github.data.dto.PersonDTO;
 import EnzoMendes.com.github.exceptions.RequiredObjectIsNullException;
 import EnzoMendes.com.github.exceptions.ResourceNotFoundException;
-import static EnzoMendes.com.github.mapper.ObjectMapper.parseListObjects;
 import static EnzoMendes.com.github.mapper.ObjectMapper.parseObject;
 import EnzoMendes.com.github.model.Person;
 import EnzoMendes.com.github.repositories.PersonRepository;
@@ -15,9 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 
 @Service
@@ -25,6 +28,10 @@ public class PersonServices {
 
     @Autowired
     PersonRepository repository;
+
+    private PagedResourcesAssembler<PersonDTO> assembler;
+
+    public PersonServices(PagedResourcesAssembler<PersonDTO> assembler){  this.assembler = assembler;}
 
     private Logger logger = LoggerFactory.getLogger(PersonServices.class.getName());
 
@@ -40,12 +47,23 @@ public class PersonServices {
         return dto;
     }
 
-    public List<PersonDTO> findAll(){
+    public PagedModel<EntityModel<PersonDTO>> findAll(Pageable pageable){
         logger.info("Searching all People");
 
-        var people = parseListObjects(repository.findAll(), PersonDTO.class);
-        people.forEach(this::addHateoasLinks);
-        return people;
+        var pageableList = repository.findAll(pageable);
+
+        var pageableListWithLinks = pageableList.map(person -> {
+            var personDTO = parseObject(person, PersonDTO.class);
+            addHateoasLinks(personDTO);
+
+            return personDTO;
+        });
+
+        Link findAllLinks = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PersonController.class).findAll(pageable.getPageNumber(),
+                pageable.getPageSize(),
+                String.valueOf(pageable.getSort())))
+                .withSelfRel();
+        return assembler.toModel(pageableListWithLinks, findAllLinks);
     };
 
     public PersonDTO create(PersonDTO person){
@@ -106,7 +124,7 @@ public class PersonServices {
     //helper
     private void addHateoasLinks(PersonDTO dto){
         dto.add(linkTo(methodOn(PersonController.class).findById(dto.getId())).withSelfRel().withType("GET"));
-        dto.add(linkTo(methodOn(PersonController.class).findAll()).withRel("findAll").withType("GET"));
+        dto.add(linkTo(methodOn(PersonController.class).findAll(1, 12, "asc")).withRel("findAll").withType("GET"));
         dto.add(linkTo(methodOn(PersonController.class).create(dto)).withRel("create").withType("POST"));
         dto.add(linkTo(methodOn(PersonController.class).update(dto)).withRel("update").withType("PUT"));
         dto.add(linkTo(methodOn(PersonController.class).disablePerson(dto.getId())).withRel("disable").withType("PATCH"));

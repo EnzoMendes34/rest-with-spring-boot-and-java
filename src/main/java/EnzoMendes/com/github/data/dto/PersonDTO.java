@@ -2,6 +2,7 @@ package EnzoMendes.com.github.data.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -12,6 +13,7 @@ import java.util.Objects;
         "last_name",
         "address"
 })
+@Relation(collectionRelation = "People")
 public class PersonDTO extends RepresentationModel<PersonDTO> implements Serializable {
 
     private static final Long serialVersionUID = 1L;

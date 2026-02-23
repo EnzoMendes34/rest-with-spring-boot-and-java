@@ -2,10 +2,12 @@ package EnzoMendes.com.github.data.dto;
 
 
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 import java.io.Serializable;
 import java.util.Objects;
 
+@Relation(collectionRelation = "Books")
 public class BookDTO  extends RepresentationModel<BookDTO> implements Serializable {
 
     private static final Long serialVersionUID = 1L;
