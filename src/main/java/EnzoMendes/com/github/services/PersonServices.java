@@ -6,8 +6,7 @@ import EnzoMendes.com.github.exceptions.*;
 
 import static EnzoMendes.com.github.mapper.ObjectMapper.parseObject;
 
-import EnzoMendes.com.github.file.exporter.MediaTypes;
-import EnzoMendes.com.github.file.exporter.contract.FileExporter;
+import EnzoMendes.com.github.file.exporter.contract.PersonExporter;
 import EnzoMendes.com.github.file.exporter.factory.FileExporterFactory;
 import EnzoMendes.com.github.file.importer.contract.FileImporter;
 import EnzoMendes.com.github.file.importer.factory.FileImporterFactory;
@@ -74,8 +73,8 @@ public class PersonServices {
         var people = repository.findAll(pageable).map(person -> parseObject(person, PersonDTO.class)).getContent();
 
         try {
-            FileExporter exporter = this.exporter.getExporter(acceptHeader);
-            return exporter.exportFile(people);
+            PersonExporter exporter = this.exporter.getExporter(acceptHeader);
+            return exporter.exportPeople(people);
 
         } catch (Exception e) {
             throw new ExportFileException("Error during file export. Error: " + e );
@@ -174,6 +173,21 @@ public class PersonServices {
                 .orElseThrow(() -> new ResourceNotFoundException("No People found for the given ID"));
 
         repository.delete(entity);
+    }
+
+    public Resource exportPerson(Long id, String acceptHeader) {
+        logger.info("Exporting data of one Person");
+
+        var person = repository.findById(id)
+                .map(entity -> parseObject(entity, PersonDTO.class))
+                .orElseThrow(() -> new ResourceNotFoundException("No records found for this Id"));
+
+        try {
+            PersonExporter exporter = this.exporter.getExporter(acceptHeader);
+            return exporter.exportPerson(person);
+        } catch (Exception e) {
+            throw new ExportFileException("Error during file export. Error: " + e );
+        }
     }
 
     //helpers

@@ -1,7 +1,9 @@
 package EnzoMendes.com.github.file.exporter.impl;
 
 import EnzoMendes.com.github.data.dto.PersonDTO;
-import EnzoMendes.com.github.file.exporter.contract.FileExporter;
+import EnzoMendes.com.github.exceptions.ExportFileException;
+import EnzoMendes.com.github.file.exporter.contract.PersonExporter;
+import net.sf.jasperreports.engine.JRException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.core.io.ByteArrayResource;
@@ -13,9 +15,9 @@ import java.io.IOException;
 import java.util.List;
 
 @Component
-public class XlsxExporter implements FileExporter {
+public class XlsxExporter implements PersonExporter {
     @Override
-    public Resource exportFile(List<PersonDTO> people) throws IOException {
+    public Resource exportPeople(List<PersonDTO> people) throws IOException {
         try(Workbook workBook = new XSSFWorkbook()){
             Sheet sheet =  workBook.createSheet("People");
 
@@ -49,6 +51,8 @@ public class XlsxExporter implements FileExporter {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             workBook.write(outputStream);
             return new ByteArrayResource(outputStream.toByteArray());
+        } catch (Error e){
+            throw new ExportFileException("Error while trying to export file, please try again. ERROR: " + e.getMessage());
         }
     }
 
@@ -60,5 +64,10 @@ public class XlsxExporter implements FileExporter {
         style.setAlignment(HorizontalAlignment.CENTER);
 
         return style;
+    }
+
+    @Override
+    public Resource exportPerson(PersonDTO person) throws IOException, JRException {
+        return null;
     }
 }

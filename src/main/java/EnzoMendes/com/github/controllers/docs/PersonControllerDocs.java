@@ -72,7 +72,7 @@ public interface PersonControllerDocs {
 
     @Operation(
             summary = "Export people",
-            description = "Exporte a page of people in .Csv or .Xlsx format",
+            description = "Export a page of people in .Csv or .Xlsx format",
             tags = "People",
             responses = {
                     @ApiResponse(
@@ -141,6 +141,24 @@ public interface PersonControllerDocs {
             }
     )
     PersonDTO findById(@PathVariable("id") Long id);
+
+    @Operation(
+            summary = "Export Person's data",
+            description = "Export a page of a specific person in .PDF format",
+            tags = "People",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200",
+                            content = @Content(mediaType = MediaTypes.APPLICATION_PDF_VALUE)),
+                    @ApiResponse(description = "No content", responseCode = "204", content = @Content),
+                    @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+                    @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+                    @ApiResponse(description = "Not found", responseCode = "404", content = @Content),
+                    @ApiResponse(description = "Internal server Error", responseCode = "500", content = @Content)
+            }
+    )
+    ResponseEntity<Resource> exportPerson(@PathVariable("id") Long id, HttpServletRequest request);
 
     @Operation(
             summary = "Adds a new Person",

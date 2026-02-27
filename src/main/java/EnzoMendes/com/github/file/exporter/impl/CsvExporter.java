@@ -1,7 +1,9 @@
 package EnzoMendes.com.github.file.exporter.impl;
 
 import EnzoMendes.com.github.data.dto.PersonDTO;
-import EnzoMendes.com.github.file.exporter.contract.FileExporter;
+import EnzoMendes.com.github.exceptions.ExportFileException;
+import EnzoMendes.com.github.file.exporter.contract.PersonExporter;
+import net.sf.jasperreports.engine.JRException;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.springframework.core.io.ByteArrayResource;
@@ -15,9 +17,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Component
-public class CsvExporter implements FileExporter {
+public class CsvExporter implements PersonExporter {
     @Override
-    public Resource exportFile(List<PersonDTO> people) throws IOException {
+    public Resource exportPeople(List<PersonDTO> people) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         OutputStreamWriter writter = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
 
@@ -37,9 +39,14 @@ public class CsvExporter implements FileExporter {
                 );
             }
         } catch (Exception e){
-            throw new IOException("Error while exporting file, try again." + e.getMessage());
+            throw new ExportFileException("Error while trying to export file, please try again. ERROR: " + e.getMessage());
         }
 
         return new ByteArrayResource(outputStream.toByteArray());
+    }
+
+    @Override
+    public Resource exportPerson(PersonDTO person) throws IOException, JRException {
+        return null;
     }
 }
