@@ -2,7 +2,6 @@ package EnzoMendes.com.github.services;
 
 import EnzoMendes.com.github.controllers.BookController;
 import EnzoMendes.com.github.data.dto.BookDTO;
-import EnzoMendes.com.github.data.dto.PersonDTO;
 import EnzoMendes.com.github.exceptions.RequiredObjectIsNullException;
 import EnzoMendes.com.github.exceptions.ResourceNotFoundException;
 import EnzoMendes.com.github.model.Book;
@@ -24,16 +23,16 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
-public class BookServices {
+public class BookService {
 
     @Autowired
     BookRepository repository;
 
     private final PagedResourcesAssembler<BookDTO> assembler;
 
-    public BookServices(PagedResourcesAssembler<BookDTO> assembler){  this.assembler = assembler;}
+    public BookService(PagedResourcesAssembler<BookDTO> assembler){  this.assembler = assembler;}
 
-    private Logger logger = LoggerFactory.getLogger(BookServices.class.getName());
+    private Logger logger = LoggerFactory.getLogger(BookService.class.getName());
 
     public BookDTO findById(Long id){
         logger.info("Finding the Book");

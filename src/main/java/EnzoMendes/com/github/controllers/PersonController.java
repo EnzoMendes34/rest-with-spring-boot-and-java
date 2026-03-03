@@ -3,12 +3,11 @@ package EnzoMendes.com.github.controllers;
 import EnzoMendes.com.github.controllers.docs.PersonControllerDocs;
 import EnzoMendes.com.github.data.dto.PersonDTO;
 import EnzoMendes.com.github.file.exporter.MediaTypes;
-import EnzoMendes.com.github.services.PersonServices;
+import EnzoMendes.com.github.services.PersonService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -21,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.print.attribute.standard.Media;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +31,7 @@ public class PersonController implements PersonControllerDocs {
     //To modify the docs configuration, you must access the interface PersonControllerDocs
 
     @Autowired
-    private PersonServices service;
+    private PersonService service;
 
     @GetMapping(
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE})

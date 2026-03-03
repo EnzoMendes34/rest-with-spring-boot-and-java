@@ -2,7 +2,7 @@ package EnzoMendes.com.github.controllers;
 
 import EnzoMendes.com.github.controllers.docs.BookControllerDocs;
 import EnzoMendes.com.github.data.dto.BookDTO;
-import EnzoMendes.com.github.services.BookServices;
+import EnzoMendes.com.github.services.BookService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +23,7 @@ public class BookController implements BookControllerDocs {
     //To modify the docs configurations, you must access the interface BookControllerDocs
 
     @Autowired
-    private BookServices service;
+    private BookService service;
 
     @GetMapping(
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_YAML_VALUE}

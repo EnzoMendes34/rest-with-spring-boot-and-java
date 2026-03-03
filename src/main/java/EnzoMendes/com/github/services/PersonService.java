@@ -36,7 +36,7 @@ import java.util.Optional;
 
 
 @Service
-public class PersonServices {
+public class PersonService {
 
     @Autowired
     PersonRepository repository;
@@ -47,13 +47,13 @@ public class PersonServices {
 
     private final PagedResourcesAssembler<PersonDTO> assembler;
 
-    public PersonServices(PagedResourcesAssembler<PersonDTO> assembler, FileImporterFactory importer, FileExporterFactory exporter){
+    public PersonService(PagedResourcesAssembler<PersonDTO> assembler, FileImporterFactory importer, FileExporterFactory exporter){
         this.assembler = assembler;
         this.importer = importer;
         this.exporter = exporter;
     }
 
-    private Logger logger = LoggerFactory.getLogger(PersonServices.class.getName());
+    private Logger logger = LoggerFactory.getLogger(PersonService.class.getName());
 
     public PersonDTO findById(Long id) {
         logger.info("Finding one Person");
